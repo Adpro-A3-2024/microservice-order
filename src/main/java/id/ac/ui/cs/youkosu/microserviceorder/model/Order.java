@@ -11,21 +11,17 @@ public class Order {
     private String orderId;
     private List<Product> products;
     private String status;
-    Order(String orderId, List<Product> products, String status){
+
+    Order(String orderId, List<Product> products){
         this.orderId = orderId;
-        this.status = status;
+        this.products = products;
+        this.status = "UNVERIFIED";
 
         if (products.isEmpty()) {
             throw new IllegalArgumentException();
         } else {
             this.products = products;
         }
-    }
-
-    Order(String orderId, List<Product> products){
-        this.orderId = orderId;
-        this.products = products;
-        this.status = "UNVERIFIED";
     }
 
     void setStatusToVerified(){
