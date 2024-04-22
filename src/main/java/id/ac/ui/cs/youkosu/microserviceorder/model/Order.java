@@ -10,12 +10,12 @@ import java.util.List;
 public class Order {
     private String orderId;
     private List<Product> products;
-    private String status;
+    private OrderStatus status;
 
     Order(String orderId, List<Product> products){
         this.orderId = orderId;
         this.products = products;
-        this.status = "UNVERIFIED";
+        this.status = new OrderStateUnverified(this);
 
         if (products.isEmpty()) {
             throw new IllegalArgumentException();
@@ -25,18 +25,22 @@ public class Order {
     }
 
     void setStatusToVerified(){
-        this.status = "VERIFIED";
+        this.status.setStatusToVerified();
     }
 
     void setStatusToCancelled(){
-        this.status = "CANCELLED";
+        this.status.setStatusToCancelled();
     }
 
     void setStatusToShipped(){
-        this.status = "SHIPPED";
+        this.status.setStatusToShipped();
     }
 
     void setStatusToCompleted(){
-        this.status = "COMPLETED";
+        this.status.setStatusToCompleted();
+    }
+
+    String getStatus(){
+        return status.toString();
     }
 }
