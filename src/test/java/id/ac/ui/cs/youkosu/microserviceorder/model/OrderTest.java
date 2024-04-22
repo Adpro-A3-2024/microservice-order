@@ -37,7 +37,7 @@ class OrderTest{
 
         assertThrows(IllegalArgumentException.class, () -> {
             Order order = new Order("13652556-012a0-4c07-b546-54eb1396d79b",
-                    this.products, "UNVERIFIED");
+                    this.products);
         });
     }
 
@@ -54,39 +54,10 @@ class OrderTest{
         assertEquals("13652556-012a-4c07-b546-54eb1396d79b", order.getOrderId());
         assertEquals("UNVERIFIED", order.getStatus());
     }
-
-    @Test
-    void testCreateOrderVerifiedStatus() {
-        Order order = new Order("13652556-012a-4c07-b546-54eb1396d79b",
-                this.products, "VERIFIED");
-        assertEquals("VERIFIED", order.getStatus());
-    }
-
-    @Test
-    void testCreateOrderCanceledStatus() {
-        Order order = new Order("13652556-012a-4c07-b546-54eb1396d79b",
-                this.products, "CANCELED");
-        assertEquals("CANCELED", order.getStatus());
-    }
-
-    @Test
-    void testCreateOrderShippedStatus() {
-        Order order = new Order("13652556-012a-4c07-b546-54eb1396d79b",
-                this.products, "SHIPPED");
-        assertEquals("SHIPPED", order.getStatus());
-    }
-
-    @Test
-    void testCreateOrderCompletedStatus() {
-        Order order = new Order("13652556-012a-4c07-b546-54eb1396d79b",
-                this.products, "COMPLETED");
-        assertEquals("COMPLETED", order.getStatus());
-    }
-
     @Test
     void testSetStatusToVerified() {
         Order order = new Order("13652556-012a-4c07-b546-54eb1396d79b",
-                this.products, "UNVERIFIED");
+                this.products);
         order.setStatusToVerified();
         assertEquals("VERIFIED", order.getStatus());
     }
@@ -94,7 +65,8 @@ class OrderTest{
     @Test
     void testSetStatusToCancelled() {
         Order order = new Order("13652556-012a-4c07-b546-54eb1396d79b",
-                this.products, "VERIFIED");
+                this.products);
+        order.setStatusToVerified();
         order.setStatusToCancelled();
         assertEquals("CANCELLED", order.getStatus());
     }
@@ -102,7 +74,8 @@ class OrderTest{
     @Test
     void testSetStatusToShipped() {
         Order order = new Order("13652556-012a-4c07-b546-54eb1396d79b",
-                this.products, "VERIFIED");
+                this.products);
+        order.setStatusToVerified();
         order.setStatusToShipped();
         assertEquals("SHIPPED", order.getStatus());
     }
@@ -110,7 +83,9 @@ class OrderTest{
     @Test
     void testSetStatusToCompleted() {
         Order order = new Order("13652556-012a-4c07-b546-54eb1396d79b",
-                this.products, "SHIPPED");
+                this.products);
+        order.setStatusToVerified();
+        order.setStatusToShipped();
         order.setStatusToCompleted();
         assertEquals("COMPLETED", order.getStatus());
     }
