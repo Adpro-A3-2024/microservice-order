@@ -12,7 +12,7 @@ public class Order {
     private List<Product> products;
     private OrderStatus status;
 
-    Order(String orderId, List<Product> products){
+    public Order(String orderId, List<Product> products){
         this.orderId = orderId;
         this.products = products;
         this.status = new OrderStateUnverified(this);
@@ -40,7 +40,11 @@ public class Order {
         this.status.setStatusToCompleted();
     }
 
-    String getStatus(){
+    public String getStatus(){
         return status.toString();
+    }
+
+    public OrderStatus getStatusObj(){
+        return status;
     }
 }
