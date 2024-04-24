@@ -52,14 +52,14 @@ class OrderTest{
         assertEquals("Sabun Cap Usep", order.getProducts().get(1).getProductReqName());
 
         assertEquals("13652556-012a-4c07-b546-54eb1396d79b", order.getOrderId());
-        assertEquals("UNVERIFIED", order.getStatus());
+        assertEquals("UNVERIFIED", order.getStatus().toString());
     }
     @Test
     void testSetStatusToVerified() {
         Order order = new Order("13652556-012a-4c07-b546-54eb1396d79b",
                 this.products);
         order.setStatusToVerified();
-        assertEquals("VERIFIED", order.getStatus());
+        assertEquals("VERIFIED", order.getStatus().toString());
     }
 
     @Test
@@ -68,7 +68,7 @@ class OrderTest{
                 this.products);
         order.setStatusToVerified();
         order.setStatusToCancelled();
-        assertEquals("CANCELLED", order.getStatus());
+        assertEquals("CANCELLED", order.getStatus().toString());
     }
 
     @Test
@@ -77,7 +77,7 @@ class OrderTest{
                 this.products);
         order.setStatusToVerified();
         order.setStatusToShipped();
-        assertEquals("SHIPPED", order.getStatus());
+        assertEquals("SHIPPED", order.getStatus().toString());
     }
 
     @Test
@@ -87,7 +87,7 @@ class OrderTest{
         order.setStatusToVerified();
         order.setStatusToShipped();
         order.setStatusToCompleted();
-        assertEquals("COMPLETED", order.getStatus());
+        assertEquals("COMPLETED", order.getStatus().toString());
     }
 
 }
