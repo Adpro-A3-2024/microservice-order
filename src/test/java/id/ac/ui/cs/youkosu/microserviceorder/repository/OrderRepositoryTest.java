@@ -49,7 +49,7 @@ public class OrderRepositoryTest {
         Order order = orders.get(1);
         orderRepository.save(order);
         Order newOrder = new Order(order.getOrderId(), order.getProducts());
-        newOrder.setStatus(order.getStatusObj());
+        newOrder.setStatus(order.getStatus());
 
         Order result = orderRepository.save(newOrder);
         Order findResult = orderRepository.findById(orders.get(1).getOrderId());
