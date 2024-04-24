@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import id.ac.ui.cs.youkosu.microserviceorder.model.Order;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.stereotype.Repository;
 
-@Repository
+@Repository @Getter @Setter
 public class OrderRepository {
     private List<Order> orderData = new ArrayList<>();
 
