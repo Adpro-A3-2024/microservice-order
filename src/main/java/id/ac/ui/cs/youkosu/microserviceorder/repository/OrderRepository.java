@@ -35,4 +35,8 @@ public class OrderRepository {
         return null;
     }
 
+    public List<Order> findAll(){
+        return orderData;
+    }
+
 }
