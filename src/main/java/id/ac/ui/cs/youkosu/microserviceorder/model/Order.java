@@ -1,12 +1,13 @@
 package id.ac.ui.cs.youkosu.microserviceorder.model;
 
 import id.ac.ui.cs.youkosu.microserviceorder.tempModel.Product;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
 
-@Getter @Setter
+@Getter @Setter @Data
 public class Order {
     private String orderId;
     private List<Product> products;
@@ -15,7 +16,7 @@ public class Order {
     public Order(String orderId, List<Product> products){
         this.orderId = orderId;
         this.products = products;
-        this.status = new OrderStateUnverified(this);
+        this.status = new OrderStateUnverified();
 
         if (products.isEmpty()) {
             throw new IllegalArgumentException();
@@ -25,35 +26,18 @@ public class Order {
     }
 
     public void setStatusToVerified(){
-        this.status.setStatusToVerified();
+        this.status.setStatusToVerified(this);
     }
 
     public void setStatusToCancelled(){
-        this.status.setStatusToCancelled();
+        this.status.setStatusToCancelled(this);
     }
 
     public void setStatusToShipped(){
-        this.status.setStatusToShipped();
+        this.status.setStatusToShipped(this);
     }
 
     public void setStatusToCompleted(){
-        this.status.setStatusToCompleted();
-    }
-
-    public String getStatusByString(){
-        return status.toString();
-    }
-
-    public void setStatusByString(String orderStatusString){
-
-    }
-
-    public OrderStatus getStatusByObj(){
-        return status;
-    }
-
-    public void setStatus(OrderStatus orderStatus){
-        this.status = orderStatus;
-        orderStatus.setOrder(this);
+        this.status.setStatusToCompleted(this);
     }
 }

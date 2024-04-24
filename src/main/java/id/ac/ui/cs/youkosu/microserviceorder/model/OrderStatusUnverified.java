@@ -1,28 +1,28 @@
 package id.ac.ui.cs.youkosu.microserviceorder.model;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 class OrderStateUnverified extends OrderStatus {
-
-    OrderStateUnverified(Order order) {
-        super(order);
+    public OrderStateUnverified() {
+        super();
+    }
+    @Override
+    public void setStatusToVerified(Order order) {
+        order.setStatus(new OrderStateVerified());
     }
 
     @Override
-    public void setStatusToVerified() {
-        this.order.setStatus(new OrderStateVerified(this.order));
+    public void setStatusToCancelled(Order order) {
     }
 
     @Override
-    public void setStatusToCancelled() {
+    public void setStatusToShipped(Order order) {
     }
 
     @Override
-    public void setStatusToShipped() {
+    public void setStatusToCompleted(Order order) {
     }
-
-    @Override
-    public void setStatusToCompleted() {
-    }
-
+    @JsonValue
     @Override
     public String toString(){
         return "UNVERIFIED";

@@ -1,27 +1,24 @@
 package id.ac.ui.cs.youkosu.microserviceorder.model;
 
 class OrderStateVerified extends OrderStatus {
-
-    OrderStateVerified(Order order) {
-        super(order);
+    public OrderStateVerified() {
+    }
+    @Override
+    public void setStatusToVerified(Order order) {
     }
 
     @Override
-    public void setStatusToVerified() {
+    public void setStatusToCancelled(Order order) {
+        order.setStatus(new OrderStateCancelled());
     }
 
     @Override
-    public void setStatusToCancelled() {
-        this.order.setStatus(new OrderStateCancelled(this.order));
+    public void setStatusToShipped(Order order) {
+        order.setStatus(new OrderStatusShipped());
     }
 
     @Override
-    public void setStatusToShipped() {
-        this.order.setStatus(new OrderStatusShipped(this.order));
-    }
-
-    @Override
-    public void setStatusToCompleted() {
+    public void setStatusToCompleted(Order order) {
     }
 
     @Override
