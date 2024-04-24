@@ -59,6 +59,16 @@ public class OrderRepositoryTest {
     }
 
     @Test
+    void testFindAll() {
+        for (Order order : orders) {
+            orderRepository.save(order);
+        }
+
+        List<Order> result = orderRepository.findAll();
+        assertEquals(orders, result);
+    }
+
+    @Test
     void testFindByIdIfIdFound() {
         for (Order order : orders) {
             orderRepository.save(order);
