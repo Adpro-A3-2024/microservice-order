@@ -7,19 +7,19 @@ class OrderStateCancelled extends OrderStatus {
     }
 
     @Override
-    void setStatusToVerified() {
+    public void setStatusToVerified() {
     }
 
     @Override
-    void setStatusToCancelled() {
+    public void setStatusToCancelled() {
     }
 
     @Override
-    void setStatusToShipped() {
+    public void setStatusToShipped() {
     }
 
     @Override
-    void setStatusToCompleted() {
+    public void setStatusToCompleted() {
     }
 
     @Override

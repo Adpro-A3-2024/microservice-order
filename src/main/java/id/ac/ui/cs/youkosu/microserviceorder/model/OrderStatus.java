@@ -1,12 +1,16 @@
 package id.ac.ui.cs.youkosu.microserviceorder.model;
 
-abstract class OrderStatus{
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter @Setter
+public abstract class OrderStatus{
     protected Order order;
     OrderStatus(Order order){
         this.order = order;
     }
-    abstract void setStatusToVerified();
-    abstract void setStatusToCancelled();
-    abstract void setStatusToShipped();
-    abstract void setStatusToCompleted();
+    abstract public void setStatusToVerified();
+    abstract public void setStatusToCancelled();
+    abstract public void setStatusToShipped();
+    abstract public void setStatusToCompleted();
 }

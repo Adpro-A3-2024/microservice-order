@@ -24,27 +24,36 @@ public class Order {
         }
     }
 
-    void setStatusToVerified(){
+    public void setStatusToVerified(){
         this.status.setStatusToVerified();
     }
 
-    void setStatusToCancelled(){
+    public void setStatusToCancelled(){
         this.status.setStatusToCancelled();
     }
 
-    void setStatusToShipped(){
+    public void setStatusToShipped(){
         this.status.setStatusToShipped();
     }
 
-    void setStatusToCompleted(){
+    public void setStatusToCompleted(){
         this.status.setStatusToCompleted();
     }
 
-    public String getStatus(){
+    public String getStatusByString(){
         return status.toString();
     }
 
-    public OrderStatus getStatusObj(){
+    public void setStatusByString(String orderStatusString){
+
+    }
+
+    public OrderStatus getStatusByObj(){
         return status;
+    }
+
+    public void setStatus(OrderStatus orderStatus){
+        this.status = orderStatus;
+        orderStatus.setOrder(this);
     }
 }

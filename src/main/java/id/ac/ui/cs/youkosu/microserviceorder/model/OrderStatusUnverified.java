@@ -7,20 +7,20 @@ class OrderStateUnverified extends OrderStatus {
     }
 
     @Override
-    void setStatusToVerified() {
+    public void setStatusToVerified() {
         this.order.setStatus(new OrderStateVerified(this.order));
     }
 
     @Override
-    void setStatusToCancelled() {
+    public void setStatusToCancelled() {
     }
 
     @Override
-    void setStatusToShipped() {
+    public void setStatusToShipped() {
     }
 
     @Override
-    void setStatusToCompleted() {
+    public void setStatusToCompleted() {
     }
 
     @Override
