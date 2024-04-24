@@ -112,6 +112,13 @@ public class OrderServiceImplTest {
     }
 
     @Test
+    void testFindByAll(){
+        doReturn(orders).when(orderRepository).findAll();
+        List<Order> result = orderService.findAll();
+        assertEquals(orders, result);
+    }
+
+    @Test
     void testFindByIdIfIdFound(){
         Order order = orders.get(1);
         doReturn(order).when(orderRepository).findById(order.getOrderId());
