@@ -1,5 +1,7 @@
 package id.ac.ui.cs.youkosu.microserviceorder.model;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 class OrderStateVerified extends OrderStatus {
     public OrderStateVerified() {
     }
@@ -21,6 +23,7 @@ class OrderStateVerified extends OrderStatus {
     public void setStatusToCompleted(Order order) {
     }
 
+    @JsonValue
     @Override
     public String toString(){
         return "VERIFIED";

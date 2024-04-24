@@ -1,5 +1,7 @@
 package id.ac.ui.cs.youkosu.microserviceorder.model;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 class OrderStatusCompleted extends OrderStatus {
 
     OrderStatusCompleted() {
@@ -21,6 +23,7 @@ class OrderStatusCompleted extends OrderStatus {
     public void setStatusToCompleted(Order order) {
     }
 
+    @JsonValue
     @Override
     public String toString(){
         return "COMPLETED";
