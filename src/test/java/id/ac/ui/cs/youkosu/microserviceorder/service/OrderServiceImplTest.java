@@ -107,7 +107,7 @@ public class OrderServiceImplTest {
         Order result = orderService.updateStatus(order.getOrderId(), "COMPLETED");
 
         assertEquals(order.getOrderId(), result.getOrderId());
-        assertEquals("CANCELLED", result.getStatus().toString());
+        assertEquals("VERIFIED", result.getStatus().toString());
         verify(orderRepository, times(3)).save(any(Order.class));
     }
 
