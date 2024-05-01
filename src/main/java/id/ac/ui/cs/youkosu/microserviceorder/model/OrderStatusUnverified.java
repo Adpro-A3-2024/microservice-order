@@ -13,6 +13,7 @@ class OrderStateUnverified extends OrderStatus {
 
     @Override
     public void setStatusToCancelled(Order order) {
+        order.setStatus(new OrderStateCancelled());
     }
 
     @Override
