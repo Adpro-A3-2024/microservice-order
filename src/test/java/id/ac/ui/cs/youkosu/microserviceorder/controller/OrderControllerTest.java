@@ -1,7 +1,7 @@
 package id.ac.ui.cs.youkosu.microserviceorder.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import id.ac.ui.cs.youkosu.microserviceorder.model.Order;
+import id.ac.ui.cs.youkosu.microserviceorder.model.Order.Order;
 import id.ac.ui.cs.youkosu.microserviceorder.service.OrderServiceImpl;
 import id.ac.ui.cs.youkosu.microserviceorder.tempModel.Product;
 import org.junit.jupiter.api.BeforeEach;
