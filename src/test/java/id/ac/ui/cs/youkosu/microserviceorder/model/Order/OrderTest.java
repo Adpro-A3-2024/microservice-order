@@ -1,5 +1,8 @@
-package id.ac.ui.cs.youkosu.microserviceorder.model;
+package id.ac.ui.cs.youkosu.microserviceorder.model.Order;
 
+import id.ac.ui.cs.youkosu.microserviceorder.model.Delivery.Delivery;
+import id.ac.ui.cs.youkosu.microserviceorder.model.Delivery.DeliveryMethod;
+import id.ac.ui.cs.youkosu.microserviceorder.model.Delivery.JTEDelivery;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import id.ac.ui.cs.youkosu.microserviceorder.tempModel.Product;
@@ -74,8 +77,11 @@ class OrderTest{
     void testSetStatusToShipped() {
         Order order = new Order("13652556-012a-4c07-b546-54eb1396d79b",
                 this.products);
+        Delivery JTEDelivery = new Delivery();
+        DeliveryMethod JTEDeliveryMethod = new JTEDelivery();
+        JTEDelivery.setDeliveryMethod(JTEDeliveryMethod);
         order.setStatusToVerified();
-        order.setStatusToShipped();
+        order.setStatusToShipped(JTEDelivery);
         assertEquals("SHIPPED", order.getStatus().toString());
     }
 
@@ -83,8 +89,12 @@ class OrderTest{
     void testSetStatusToCompleted() {
         Order order = new Order("13652556-012a-4c07-b546-54eb1396d79b",
                 this.products);
+
+        Delivery JTEDelivery = new Delivery();
+        DeliveryMethod JTEDeliveryMethod = new JTEDelivery();
+
         order.setStatusToVerified();
-        order.setStatusToShipped();
+        order.setStatusToShipped(JTEDelivery);
         order.setStatusToCompleted();
         assertEquals("COMPLETED", order.getStatus().toString());
     }
