@@ -12,7 +12,6 @@ import static org.mockito.Mockito.verify;
 import java.util.ArrayList;
 import java.util.List;
 
-import id.ac.ui.cs.youkosu.microserviceorder.model.OrderStatus;
 import id.ac.ui.cs.youkosu.microserviceorder.repository.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,10 +21,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 
-import id.ac.ui.cs.youkosu.microserviceorder.model.Order;
+import id.ac.ui.cs.youkosu.microserviceorder.model.Order.Order;
 import id.ac.ui.cs.youkosu.microserviceorder.tempModel.Product;
-import id.ac.ui.cs.youkosu.microserviceorder.service.OrderServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @ExtendWith(MockitoExtension.class)
 public class OrderServiceImplTest {
@@ -79,7 +76,7 @@ public class OrderServiceImplTest {
         doReturn(order).when(orderRepository).findById(order.getOrderId());
         doReturn(newOrderVerified).when(orderRepository).save(any(Order.class));
 
-        Order result = orderService.updateStatus(order.getOrderId(), "VERIFIED");
+        Order result = orderService.updateStatus(order.getOrderId(), "VERIFIED", null);
 
         assertEquals(order.getOrderId(), result.getOrderId());
         assertEquals("VERIFIED", result.getStatus().toString());
@@ -94,17 +91,17 @@ public class OrderServiceImplTest {
         newOrderVerified.setStatusToVerified();
         doReturn(order).when(orderRepository).findById(order.getOrderId());
         doReturn(newOrderVerified).when(orderRepository).save(any(Order.class));
-        Order resultOrderCompleted = orderService.updateStatus(order.getOrderId(), "VERIFIED");
+        Order resultOrderCompleted = orderService.updateStatus(order.getOrderId(), "VERIFIED", null);
 
         doReturn(resultOrderCompleted).when(orderRepository).findById(order.getOrderId());
         newOrderVerified.setStatusToCancelled();
         doReturn(newOrderVerified).when(orderRepository).save(any(Order.class));
-        Order resultOrderCancelled = orderService.updateStatus(order.getOrderId(), "CANCELLED");
+        Order resultOrderCancelled = orderService.updateStatus(order.getOrderId(), "CANCELLED", null);
 
         doReturn(resultOrderCancelled).when(orderRepository).findById(order.getOrderId());
         newOrderVerified.setStatusToCompleted();
         doReturn(newOrderVerified).when(orderRepository).save(any(Order.class));
-        Order result = orderService.updateStatus(order.getOrderId(), "COMPLETED");
+        Order result = orderService.updateStatus(order.getOrderId(), "COMPLETED", null);
 
         assertEquals(order.getOrderId(), result.getOrderId());
         assertEquals("VERIFIED", result.getStatus().toString());
