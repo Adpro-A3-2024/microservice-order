@@ -3,7 +3,7 @@ package id.ac.ui.cs.youkosu.microserviceorder.model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import id.ac.ui.cs.youkosu.microserviceorder.tempModel.Product;
-import id.ac.ui.cs.youkosu.microserviceorder.model.Order;
+import id.ac.ui.cs.youkosu.microserviceorder.model.Order.Order;
 import java.util.ArrayList;
 import java.util.List;
 
