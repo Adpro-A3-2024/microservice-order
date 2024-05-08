@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import id.ac.ui.cs.youkosu.microserviceorder.model.Order;
+import id.ac.ui.cs.youkosu.microserviceorder.model.Order.Order;
 import id.ac.ui.cs.youkosu.microserviceorder.tempModel.Product;
 
 import org.junit.jupiter.api.BeforeEach;

@@ -3,7 +3,7 @@ package id.ac.ui.cs.youkosu.microserviceorder.repository;
 import java.util.ArrayList;
 import java.util.List;
 
-import id.ac.ui.cs.youkosu.microserviceorder.model.Order;
+import id.ac.ui.cs.youkosu.microserviceorder.model.Order.Order;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Repository;
