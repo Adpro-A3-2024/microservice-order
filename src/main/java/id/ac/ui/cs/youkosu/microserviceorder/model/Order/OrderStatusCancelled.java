@@ -1,6 +1,7 @@
-package id.ac.ui.cs.youkosu.microserviceorder.model;
+package id.ac.ui.cs.youkosu.microserviceorder.model.Order;
 
 import com.fasterxml.jackson.annotation.JsonValue;
+import id.ac.ui.cs.youkosu.microserviceorder.model.Delivery.Delivery;
 
 class OrderStateCancelled extends OrderStatus {
 
@@ -16,7 +17,7 @@ class OrderStateCancelled extends OrderStatus {
     }
 
     @Override
-    public void setStatusToShipped(Order order) {
+    public void setStatusToShipped(Order order, Delivery delivery) {
     }
 
     @Override

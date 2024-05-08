@@ -1,6 +1,7 @@
-package id.ac.ui.cs.youkosu.microserviceorder.model;
+package id.ac.ui.cs.youkosu.microserviceorder.model.Order;
 
 import com.fasterxml.jackson.annotation.JsonValue;
+import id.ac.ui.cs.youkosu.microserviceorder.model.Delivery.Delivery;
 
 class OrderStateVerified extends OrderStatus {
     public OrderStateVerified() {
@@ -14,8 +15,9 @@ class OrderStateVerified extends OrderStatus {
     }
 
     @Override
-    public void setStatusToShipped(Order order) {
+    public void setStatusToShipped(Order order, Delivery delivery) {
         order.setStatus(new OrderStatusShipped());
+        order.setDelivery(delivery);
     }
 
     @Override

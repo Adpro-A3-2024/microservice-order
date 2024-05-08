@@ -1,5 +1,7 @@
-package id.ac.ui.cs.youkosu.microserviceorder.model;
+package id.ac.ui.cs.youkosu.microserviceorder.model.Order;
 
+import id.ac.ui.cs.youkosu.microserviceorder.model.Delivery.Delivery;
+import id.ac.ui.cs.youkosu.microserviceorder.model.Delivery.DeliveryMethod;
 import id.ac.ui.cs.youkosu.microserviceorder.tempModel.Product;
 import lombok.Data;
 import lombok.Getter;
@@ -12,6 +14,7 @@ public class Order {
     private String orderId;
     private List<Product> products;
     private OrderStatus status;
+    private Delivery delivery;
 
     public Order(String orderId, List<Product> products){
         this.orderId = orderId;
@@ -33,8 +36,8 @@ public class Order {
         this.status.setStatusToCancelled(this);
     }
 
-    public void setStatusToShipped(){
-        this.status.setStatusToShipped(this);
+    public void setStatusToShipped(Delivery delivery){
+        this.status.setStatusToShipped(this, delivery);
     }
 
     public void setStatusToCompleted(){
