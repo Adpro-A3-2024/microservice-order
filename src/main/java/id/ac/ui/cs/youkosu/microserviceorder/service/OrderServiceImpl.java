@@ -1,14 +1,13 @@
 package id.ac.ui.cs.youkosu.microserviceorder.service;
 
-import id.ac.ui.cs.youkosu.microserviceorder.model.Order;
-import id.ac.ui.cs.youkosu.microserviceorder.model.OrderStatus;
+import id.ac.ui.cs.youkosu.microserviceorder.model.Delivery.Delivery;
+import id.ac.ui.cs.youkosu.microserviceorder.model.Order.Order;
 import id.ac.ui.cs.youkosu.microserviceorder.repository.OrderRepository;
-import id.ac.ui.cs.youkosu.microserviceorder.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
+
 @Service
 public class OrderServiceImpl implements OrderService{
     @Autowired
@@ -23,7 +22,7 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public Order updateStatus(String orderId, String status) {
+    public Order updateStatus(String orderId, String status, Delivery delivery) {
         Order order = orderRepository.findById(orderId);
         if (order != null) {
             Order newOrder = new Order(order.getOrderId(), order.getProducts());
@@ -33,7 +32,7 @@ public class OrderServiceImpl implements OrderService{
             }else if(status.equals("CANCELLED")){
                 newOrder.setStatusToCancelled();
             }else if(status.equals("SHIPPED")){
-                newOrder.setStatusToShipped();
+                newOrder.setStatusToShipped(delivery);
             }else if(status.equals("COMPLETED")){
                 newOrder.setStatusToCompleted();
             }
