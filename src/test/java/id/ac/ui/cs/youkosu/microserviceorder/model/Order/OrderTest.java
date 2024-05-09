@@ -81,7 +81,7 @@ class OrderTest{
         DeliveryMethod JTEDeliveryMethod = new JTEDelivery();
         JTEDelivery.setDeliveryMethod(JTEDeliveryMethod);
         order.setStatusToVerified();
-        order.setStatusToShipped(JTEDelivery);
+        order.setStatusToShipped("JTE");
         assertEquals("SHIPPED", order.getStatus().toString());
     }
 
@@ -94,7 +94,7 @@ class OrderTest{
         DeliveryMethod JTEDeliveryMethod = new JTEDelivery();
 
         order.setStatusToVerified();
-        order.setStatusToShipped(JTEDelivery);
+        order.setStatusToShipped("JTE");
         order.setStatusToCompleted();
         assertEquals("COMPLETED", order.getStatus().toString());
     }
