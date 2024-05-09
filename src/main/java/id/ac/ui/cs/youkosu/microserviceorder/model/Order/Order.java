@@ -36,7 +36,7 @@ public class Order {
         this.status.setStatusToCancelled(this);
     }
 
-    public void setStatusToShipped(Delivery delivery){
+    public void setStatusToShipped(String delivery){
         this.status.setStatusToShipped(this, delivery);
     }
 
