@@ -93,19 +93,11 @@ public class OrderServiceImplTest {
         doReturn(newOrderVerified).when(orderRepository).save(any(Order.class));
         Order resultOrderCompleted = orderService.updateStatus(order.getOrderId(), "VERIFIED", null);
 
-        doReturn(resultOrderCompleted).when(orderRepository).findById(order.getOrderId());
-        newOrderVerified.setStatusToCancelled();
-        doReturn(newOrderVerified).when(orderRepository).save(any(Order.class));
-        Order resultOrderCancelled = orderService.updateStatus(order.getOrderId(), "CANCELLED", null);
 
-        doReturn(resultOrderCancelled).when(orderRepository).findById(order.getOrderId());
-        newOrderVerified.setStatusToCompleted();
-        doReturn(newOrderVerified).when(orderRepository).save(any(Order.class));
-        Order result = orderService.updateStatus(order.getOrderId(), "COMPLETED", null);
+        OrderStatusUpdateException exception = assertThrows(OrderStatusUpdateException.class, () ->
+                newOrderVerified.setStatusToCancelled());
 
-        assertEquals(order.getOrderId(), result.getOrderId());
-        assertEquals("VERIFIED", result.getStatus().toString());
-        verify(orderRepository, times(3)).save(any(Order.class));
+        assertEquals("Cannot update order status to CANCELLED"  + " for order " + order.getOrderId() , exception.getMessage());
     }
 
     @Test
