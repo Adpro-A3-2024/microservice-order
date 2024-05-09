@@ -22,19 +22,22 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public Order updateStatus(String orderId, String status, Delivery delivery) {
+    public Order updateStatus(String orderId, String status, String delivery) {
         Order order = orderRepository.findById(orderId);
         if (order != null) {
             Order newOrder = new Order(order.getOrderId(), order.getProducts());
             newOrder.setStatus(order.getStatus());
-            if(status.equals("VERIFIED")){
+            if (status.equals("VERIFIED")) {
                 newOrder.setStatusToVerified();
-            }else if(status.equals("CANCELLED")){
+            } else if (status.equals("CANCELLED")) {
                 newOrder.setStatusToCancelled();
-            }else if(status.equals("SHIPPED")){
+            } else if (status.equals("SHIPPED")) {
                 newOrder.setStatusToShipped(delivery);
-            }else if(status.equals("COMPLETED")){
+            } else if (status.equals("COMPLETED")) {
                 newOrder.setStatusToCompleted();
+            }else{
+                throw new OrderStatusUpdateException("Cannot update order status to " + status + " for order " + order.getOrderId()+". There is not "+status+" order status");
+
             }
             orderRepository.save(newOrder);
             return newOrder;
