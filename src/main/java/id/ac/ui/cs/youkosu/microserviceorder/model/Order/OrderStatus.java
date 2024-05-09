@@ -10,6 +10,6 @@ import lombok.Setter;
 public abstract class OrderStatus{
     abstract public void setStatusToVerified(Order order);
     abstract public void setStatusToCancelled(Order order);
-    abstract public void setStatusToShipped(Order order, Delivery delivery);
+    abstract public void setStatusToShipped(Order order, String delivery);
     abstract public void setStatusToCompleted(Order order);
 }
