@@ -2,11 +2,15 @@ package id.ac.ui.cs.youkosu.microserviceorder.controller;
 
 
 import id.ac.ui.cs.youkosu.microserviceorder.model.Delivery.Delivery;
+import id.ac.ui.cs.youkosu.microserviceorder.model.Delivery.DeliveryException;
 import id.ac.ui.cs.youkosu.microserviceorder.model.Delivery.GobekDelivery;
 import id.ac.ui.cs.youkosu.microserviceorder.model.Delivery.JTEDelivery;
 import id.ac.ui.cs.youkosu.microserviceorder.service.OrderServiceImpl;
+import id.ac.ui.cs.youkosu.microserviceorder.service.OrderStatusUpdateException;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,8 +41,17 @@ public class OrderController {
     }
 
     @PutMapping("/edit-status")
-    public Order updateStatus(@RequestBody @Validated UpdateStatusRequest request) {
-        return orderService.updateStatus(request.getOrderId(), request.getStatus(), request.getDeliveryObj());
+    public ResponseEntity<String> updateStatus(@RequestBody @Validated UpdateStatusRequest request) {
+        try {
+            Order updatedOrder = orderService.updateStatus(request.getOrderId(), request.getStatus(), request.getDelivery());
+            return ResponseEntity.ok("Order status updated successfully");
+        } catch (OrderStatusUpdateException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (DeliveryException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+        }
     }
     @Data
     static class UpdateStatusRequest {
