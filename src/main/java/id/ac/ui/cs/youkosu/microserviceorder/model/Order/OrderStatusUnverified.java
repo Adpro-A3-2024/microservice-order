@@ -4,18 +4,18 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import id.ac.ui.cs.youkosu.microserviceorder.model.Delivery.Delivery;
 import id.ac.ui.cs.youkosu.microserviceorder.service.OrderStatusUpdateException;
 
-class OrderStateUnverified extends OrderStatus {
-    public OrderStateUnverified() {
+class OrderStatusUnverified extends OrderStatus {
+    public OrderStatusUnverified() {
         super();
     }
     @Override
     public void setStatusToVerified(Order order) {
-        order.setStatus(new OrderStateVerified());
+        order.setStatus(new OrderStatusVerified().toString());
     }
 
     @Override
     public void setStatusToCancelled(Order order) {
-        order.setStatus(new OrderStatusCancelled());
+        order.setStatus(new OrderStatusCancelled().toString());
     }
 
     @Override

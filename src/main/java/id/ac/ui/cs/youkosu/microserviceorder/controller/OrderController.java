@@ -43,6 +43,7 @@ public class OrderController {
     @PutMapping("/edit-status")
     public ResponseEntity<String> updateStatus(@RequestBody @Validated UpdateStatusRequest request) {
         try {
+            System.out.println("Line 46 OrderController.java " +request.getDelivery());
             Order updatedOrder = orderService.updateStatus(request.getOrderId(), request.getStatus(), request.getDelivery());
             return ResponseEntity.ok("Order status updated successfully");
         } catch (OrderStatusUpdateException e) {

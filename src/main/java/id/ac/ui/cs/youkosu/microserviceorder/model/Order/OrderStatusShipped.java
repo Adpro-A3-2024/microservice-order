@@ -26,7 +26,7 @@ class OrderStatusShipped extends OrderStatus {
 
     @Override
     public void setStatusToCompleted(Order order) {
-        order.setStatus(new OrderStatusCompleted());
+        order.setStatus(new OrderStatusCompleted().toString());
     }
 
     @JsonValue

@@ -1,5 +1,6 @@
 package id.ac.ui.cs.youkosu.microserviceorder.model.Delivery;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,4 +36,9 @@ public class JTEDelivery implements DeliveryMethod{
         return true;
     }
 
+    @JsonValue
+    @Override
+    public String toString(){
+        return this.trackingNumber;
+    }
 }
