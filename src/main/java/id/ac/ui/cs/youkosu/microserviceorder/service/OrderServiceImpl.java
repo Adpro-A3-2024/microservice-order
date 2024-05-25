@@ -27,6 +27,7 @@ public class OrderServiceImpl implements OrderService{
         if (order != null) {
             Order newOrder = new Order(order.getOrderId(), order.getProducts());
             newOrder.setStatus(order.getStatus());
+            newOrder.setTrackingNumber(order.getTrackingNumber());
             if (status.equals("VERIFIED")) {
                 newOrder.setStatusToVerified();
             } else if (status.equals("CANCELLED")) {
