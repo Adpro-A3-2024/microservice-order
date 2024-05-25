@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import id.ac.ui.cs.youkosu.microserviceorder.model.Delivery.Delivery;
 import id.ac.ui.cs.youkosu.microserviceorder.service.OrderStatusUpdateException;
 
+import java.sql.SQLOutput;
+
 class OrderStatusShipped extends OrderStatus {
 
     OrderStatusShipped() {
@@ -26,7 +28,8 @@ class OrderStatusShipped extends OrderStatus {
 
     @Override
     public void setStatusToCompleted(Order order) {
-        order.setStatus(new OrderStatusCompleted());
+        order.setStatus(new OrderStatusCompleted().toString());
+        order.setTrackingNumber(order.getTrackingNumber());
     }
 
     @JsonValue

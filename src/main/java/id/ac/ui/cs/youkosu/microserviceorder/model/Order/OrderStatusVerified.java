@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import id.ac.ui.cs.youkosu.microserviceorder.model.Delivery.*;
 import id.ac.ui.cs.youkosu.microserviceorder.service.OrderStatusUpdateException;
 
-class OrderStateVerified extends OrderStatus {
-    public OrderStateVerified() {
+class OrderStatusVerified extends OrderStatus {
+    public OrderStatusVerified() {
     }
     @Override
     public void setStatusToVerified(Order order) {
@@ -19,18 +19,18 @@ class OrderStateVerified extends OrderStatus {
 
     @Override
     public void setStatusToShipped(Order order, String delivery) {
-        order.setStatus(new OrderStatusShipped());
+        order.setStatus(new OrderStatusShipped().toString());
         Delivery deliveryObj = new Delivery();
 
         if(delivery.equals("JTE")){
             deliveryObj.setDeliveryMethod(new JTEDelivery());
-            order.setDelivery(deliveryObj);
+            order.setTrackingNumber(deliveryObj.toString());
         }else if(delivery.equals("SiWuzz")){
             deliveryObj.setDeliveryMethod(new SiWuzzDelivery());
-            order.setDelivery(deliveryObj);
+            order.setTrackingNumber(deliveryObj.toString());
         }else if(delivery.equals("Gobek")){
             deliveryObj.setDeliveryMethod(new GobekDelivery());
-            order.setDelivery(deliveryObj);
+            order.setTrackingNumber(deliveryObj.toString());
         }else{
             throw new DeliveryException("Wrong delivery for order " + order.getOrderId() + ". There is no " +delivery + " delivery method" );
         }
