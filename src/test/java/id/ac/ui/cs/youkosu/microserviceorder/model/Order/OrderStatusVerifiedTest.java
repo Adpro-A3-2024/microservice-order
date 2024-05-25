@@ -29,8 +29,10 @@ class OrderStatusVerifiedTest {
 
         Order order = new Order(UUID.randomUUID(), cartItems);
         OrderStatusVerified status = new OrderStatusVerified();
-        status.setStatusToVerified(order);
-        assertEquals("VERIFIED", order.getStatus());
+
+        assertThrows(OrderStatusUpdateException.class, () -> {
+            status.setStatusToVerified(order);
+        });
     }
 
     @Test
