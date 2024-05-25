@@ -33,14 +33,14 @@ public class OrderServiceImplTest {
     List<Order> orders;
     @BeforeEach
     void setUp(){
-        List<Product> products = new ArrayList<>();
+        List<String> products = new ArrayList<>();
 
-        Product product1 = new Product();
-        product1.setProductReqId("eb558e9f-1c39-460e-8860-71af6af63bd6");
-        product1.setProductReqName("Sampo Cap Bambang");
-        product1.setProductReqPrice(2);
-        product1.setProductReqPictureUrl("https://images.tokopedia.net/img/cache/900/hDjmkQ/2024/1/18/73592f9a-ef15-417f-8c6f-fd79c2f4228d.jpg");
-        product1.setProductReqSourceUrl("https://images.tokopedia.net/img/cache/900/hDjmkQ/2024/1/18/73592f9a-ef15-417f-8c6f-fd79c2f4228d.jpg");
+        String product1 = "eb558e9f-1c39-460e-8860-71af6af63bd6";
+//        product1.setProductReqId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+//        product1.setProductReqName("Sampo Cap Bambang");
+//        product1.setProductReqPrice(2);
+//        product1.setProductReqPictureUrl("https://images.tokopedia.net/img/cache/900/hDjmkQ/2024/1/18/73592f9a-ef15-417f-8c6f-fd79c2f4228d.jpg");
+//        product1.setProductReqSourceUrl("https://images.tokopedia.net/img/cache/900/hDjmkQ/2024/1/18/73592f9a-ef15-417f-8c6f-fd79c2f4228d.jpg");
 
         products.add(product1);
         orders = new ArrayList<>();
