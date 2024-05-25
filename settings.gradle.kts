@@ -1,1 +1,1 @@
-rootProject.name = "microservice-order"
+rootProject.name = "microservice_order"
