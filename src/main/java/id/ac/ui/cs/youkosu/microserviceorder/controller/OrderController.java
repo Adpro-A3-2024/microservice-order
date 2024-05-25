@@ -1,6 +1,7 @@
 package id.ac.ui.cs.youkosu.microserviceorder.controller;
 
 
+import id.ac.ui.cs.youkosu.microserviceorder.model.DTO.OrderUpdateStatusDTO;
 import id.ac.ui.cs.youkosu.microserviceorder.model.Delivery.Delivery;
 import id.ac.ui.cs.youkosu.microserviceorder.model.Delivery.DeliveryException;
 import id.ac.ui.cs.youkosu.microserviceorder.model.Delivery.GobekDelivery;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import id.ac.ui.cs.youkosu.microserviceorder.model.Order.Order;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("api")
@@ -30,21 +32,22 @@ public class OrderController {
         return orderService.findAll();
     }
 
-    @GetMapping("/get/{orderId}")
-    public Order findById(@PathVariable String orderId) {
+    @GetMapping("/get")
+    public Order findById(@RequestParam UUID orderId) {
         return orderService.findById(orderId);
     }
 
     @PostMapping("/create-order")
     public Order createProductPost(@RequestBody @Validated Order order) {
-        return orderService.createOrder(order);
+        Order newOrder = new Order(order.getCartItems());
+        newOrder.setOrderId(order.getOrderId());
+        return orderService.createOrder(newOrder);
     }
 
     @PutMapping("/edit-status")
-    public ResponseEntity<String> updateStatus(@RequestBody @Validated UpdateStatusRequest request) {
+    public ResponseEntity<String> updateStatus(@RequestBody OrderUpdateStatusDTO orderUpdateStatusDTO) {
         try {
-            System.out.println("Line 46 OrderController.java " +request.getDelivery());
-            Order updatedOrder = orderService.updateStatus(request.getOrderId(), request.getStatus(), request.getDelivery());
+            Order updatedOrder = orderService.updateStatus(orderUpdateStatusDTO);
             return ResponseEntity.ok("Order status updated successfully");
         } catch (OrderStatusUpdateException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -54,49 +57,6 @@ public class OrderController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
         }
     }
-    @Data
-    static class UpdateStatusRequest {
-        private String orderId;
-        private String status;
-        private String delivery;
-
-        // Getters and setters
-        public String getOrderId() {
-            return orderId;
-        }
-
-        public void setOrderId(String orderId) {
-            this.orderId = orderId;
-        }
-
-        public String getStatus() {
-            return status;
-        }
-
-        public void setStatus(String status) {
-            this.status = status;
-        }
-
-        public String getDelivery() {
-            return delivery;
-        }
-        public Delivery getDeliveryObj() {
-            Delivery delivery = new Delivery();
-;            if(this.delivery.equals("JTE")){
-                delivery.setDeliveryMethod(new JTEDelivery());
-                return delivery;
-            }else if(this.delivery.equals("Gobek")){
-                delivery.setDeliveryMethod(new JTEDelivery());
-                return delivery;
-            }else if(this.delivery.equals("SiWuzz")){
-                delivery.setDeliveryMethod(new JTEDelivery());
-                return delivery;
-            }else {return null;}
-
-        }
-
-    }
-
 }
 
 

@@ -29,7 +29,6 @@ class OrderStatusShipped extends OrderStatus {
     @Override
     public void setStatusToCompleted(Order order) {
         order.setStatus(new OrderStatusCompleted().toString());
-        System.out.println("Line 32 OrderStatusShipped"+order.getTrackingNumber());
         order.setTrackingNumber(order.getTrackingNumber());
     }
 
