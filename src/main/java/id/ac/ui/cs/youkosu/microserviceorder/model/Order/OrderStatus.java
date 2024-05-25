@@ -1,5 +1,7 @@
-package id.ac.ui.cs.youkosu.microserviceorder.model;
+package id.ac.ui.cs.youkosu.microserviceorder.model.Order;
 
+import id.ac.ui.cs.youkosu.microserviceorder.model.Delivery.Delivery;
+import id.ac.ui.cs.youkosu.microserviceorder.model.Delivery.DeliveryMethod;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,6 +10,6 @@ import lombok.Setter;
 public abstract class OrderStatus{
     abstract public void setStatusToVerified(Order order);
     abstract public void setStatusToCancelled(Order order);
-    abstract public void setStatusToShipped(Order order);
+    abstract public void setStatusToShipped(Order order, String delivery);
     abstract public void setStatusToCompleted(Order order);
 }

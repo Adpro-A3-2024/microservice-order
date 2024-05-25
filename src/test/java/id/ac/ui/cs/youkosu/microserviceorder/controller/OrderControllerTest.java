@@ -1,9 +1,11 @@
 package id.ac.ui.cs.youkosu.microserviceorder.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import id.ac.ui.cs.youkosu.microserviceorder.model.Order;
+import id.ac.ui.cs.youkosu.microserviceorder.model.DTO.OrderUpdateStatusDTO;
+import id.ac.ui.cs.youkosu.microserviceorder.model.Delivery.DeliveryException;
+import id.ac.ui.cs.youkosu.microserviceorder.model.Order.Order;
 import id.ac.ui.cs.youkosu.microserviceorder.service.OrderServiceImpl;
-import id.ac.ui.cs.youkosu.microserviceorder.tempModel.Product;
+import id.ac.ui.cs.youkosu.microserviceorder.service.OrderStatusUpdateException;
+import id.ac.ui.cs.youkosu.microserviceorder.tempModel.CartItem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -15,9 +17,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -41,27 +46,39 @@ public class OrderControllerTest {
     @Test
     void testFindAllOrders() throws Exception {
         // Mock data
-        List<Product> products = new ArrayList<>();
-        Product productA = new Product();
-        productA.setProductReqId("1");
-        productA.setProductReqName("Product A");
-        productA.setProductReqPrice(10.0);
-        productA.setProductReqPictureUrl("url1");
-        productA.setProductReqSourceUrl("sourceUrl1");
+        List<CartItem> cartItems = new ArrayList<>();
+        CartItem cartItemA = new CartItem(
+                UUID.randomUUID(),
+                "Product A",
+                10.0,
+                5,
+                0.0,
+                0,
+                "url1"
+        );
 
-        Product productB = new Product();
-        productB.setProductReqId("2");
-        productB.setProductReqName("Product B");
-        productB.setProductReqPrice(20.0);
-        productB.setProductReqPictureUrl("url2");
-        productB.setProductReqSourceUrl("sourceUrl2");
+        CartItem cartItemB = new CartItem(
+                UUID.randomUUID(),
+                "Product B",
+                20.0,
+                10,
+                0.0,
+                0,
+                "url2"
+        );
 
-        products.add(productA);
-        products.add(productB);
+        cartItems.add(cartItemA);
+        cartItems.add(cartItemB);
 
         List<Order> orders = new ArrayList<>();
-        orders.add(new Order("1", products));
-        orders.add(new Order("2", products));
+        Order order1 = new Order(UUID.randomUUID(),cartItems);
+        Order order2 = new Order(UUID.randomUUID(), cartItems);
+
+        UUID order1UUID = order1.getOrderId();
+        UUID order2UUID = order2.getOrderId();
+
+        orders.add(order1);
+        orders.add(order2);
 
         // Mock service method
         when(orderService.findAll()).thenReturn(orders);
@@ -71,45 +88,161 @@ public class OrderControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$[0].orderId").value("1"))
-                .andExpect(jsonPath("$[0].products[0].productReqId").value("1"))
-                .andExpect(jsonPath("$[0].products[0].productReqName").value("Product A"))
-                .andExpect(jsonPath("$[0].products[0].productReqPrice").value(10.0))
-                .andExpect(jsonPath("$[0].products[0].productReqPictureUrl").value("url1"))
-                .andExpect(jsonPath("$[0].products[0].productReqSourceUrl").value("sourceUrl1"))
-                .andExpect(jsonPath("$[1].orderId").value("2"))
-                .andExpect(jsonPath("$[1].products[1].productReqId").value("2"))
-                .andExpect(jsonPath("$[1].products[1].productReqName").value("Product B"))
-                .andExpect(jsonPath("$[1].products[1].productReqPrice").value(20.0))
-                .andExpect(jsonPath("$[1].products[1].productReqPictureUrl").value("url2"))
-                .andExpect(jsonPath("$[1].products[1].productReqSourceUrl").value("sourceUrl2"));
+                .andExpect(jsonPath("$[0].orderId").value(order1UUID.toString()))
+                .andExpect(jsonPath("$[0].cartItems[0].productName").value("Product A"))
+                .andExpect(jsonPath("$[0].cartItems[0].productPrice").value(10.0))
+                .andExpect(jsonPath("$[0].cartItems[0].productPictureUrl").value("url1"))
+                .andExpect(jsonPath("$[1].orderId").value(order2UUID.toString()))
+                .andExpect(jsonPath("$[1].cartItems[1].productName").value("Product B"))
+                .andExpect(jsonPath("$[1].cartItems[1].productPrice").value(20.0))
+                .andExpect(jsonPath("$[1].cartItems[1].productPictureUrl").value("url2"));
     }
 
     @Test
     void testFindOrderById() throws Exception {
         // Mock data
-        List<Product> products = new ArrayList<>();
-        products.add(new Product());
+        List<CartItem> cartItems = new ArrayList<>();
+        CartItem cartItem = new CartItem(
+                UUID.randomUUID(),
+                "Product A",
+                10.0,
+                5,
+                0.0,
+                0,
+                "url1"
+        );
 
-        Order order = new Order("1", products);
+        cartItems.add(cartItem);
+
+        Order order = new Order(UUID.randomUUID(), cartItems);
+        UUID orderUUID = order.getOrderId();
 
         // Mock service method
-        when(orderService.findById("1")).thenReturn(order);
+        when(orderService.findById(orderUUID)).thenReturn(order);
 
         // Perform GET request
-        mockMvc.perform(get("/api/get/1")
+        mockMvc.perform(get("/api/get?orderId=" + orderUUID.toString())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.orderId").value("1"))
-                .andExpect(jsonPath("$.status").value("UNVERIFIED"));
+                .andExpect(jsonPath("$.orderId").value(orderUUID.toString()))
+                .andExpect(jsonPath("$.cartItems[0].productName").value("Product A"))
+                .andExpect(jsonPath("$.cartItems[0].productPrice").value(10.0))
+                .andExpect(jsonPath("$.cartItems[0].productPictureUrl").value("url1"));
     }
 
-    // Helper method to convert object to JSON string
-    private String asJsonString(final Object obj) {
-        try {
-            return new ObjectMapper().writeValueAsString(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    @Test
+    void testUpdateStatus() throws Exception {
+        // Mock data
+        List<CartItem> cartItems = new ArrayList<>();
+        CartItem cartItem = new CartItem(
+                UUID.randomUUID(),
+                "Product A",
+                10.0,
+                5,
+                0.0,
+                0,
+                "url1"
+        );
+
+        cartItems.add(cartItem);
+
+        Order order = new Order(UUID.randomUUID(), cartItems);
+        UUID orderUUID = order.getOrderId();
+
+        OrderUpdateStatusDTO updateStatusDTO = new OrderUpdateStatusDTO();
+        updateStatusDTO.setOrderId(orderUUID);
+        updateStatusDTO.setStatus("COMPLETED");
+        updateStatusDTO.setDelivery("Gobek");
+
+        when(orderService.updateStatus(any(OrderUpdateStatusDTO.class))).thenReturn(order);
+        System.out.println("Line 155 "+order.getStatus());
+        // Perform POST request
+        mockMvc.perform(put("/api/edit-status")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{ \"orderId\": \"" + orderUUID.toString() + "\", \"status\": \"VERIFIED\", \"delivery\": \"Gobek\" }"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void testCreateProductPost() throws Exception {
+        // Mock data
+        List<CartItem> cartItems = new ArrayList<>();
+        CartItem cartItem = new CartItem(
+                UUID.randomUUID(),
+                "Product A",
+                10.0,
+                5,
+                0.0,
+                0,
+                "url1"
+        );
+
+        cartItems.add(cartItem);
+
+        Order order = new Order(UUID.randomUUID(), cartItems);
+        UUID orderUUID = order.getOrderId();
+
+        when(orderService.createOrder(any(Order.class))).thenReturn(order);
+
+        // Perform POST request
+        mockMvc.perform(post("/api/create-order")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{ \"cartItems\": [{ \"productId\": \"" + cartItem.getProductId() + "\", \"productName\": \"Product A\", \"productPrice\": 10.0, \"productStock\": 5, \"productDiscount\": 0.0, \"productDiscountDaysLeft\": 0, \"productPictureUrl\": \"url1\" }] }"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.orderId").value(orderUUID.toString()))
+                .andExpect(jsonPath("$.cartItems[0].productName").value("Product A"))
+                .andExpect(jsonPath("$.cartItems[0].productPrice").value(10.0))
+                .andExpect(jsonPath("$.cartItems[0].productPictureUrl").value("url1"));
+    }
+
+    @Test
+    void testUpdateStatusOrderStatusUpdateException() throws Exception {
+        UUID orderUUID = UUID.randomUUID();
+
+        OrderUpdateStatusDTO updateStatusDTO = new OrderUpdateStatusDTO();
+        updateStatusDTO.setOrderId(orderUUID);
+        updateStatusDTO.setStatus("INVALID_STATUS");
+        updateStatusDTO.setDelivery("Gobek");
+
+        doThrow(new OrderStatusUpdateException("Cannot update order status")).when(orderService).updateStatus(any(OrderUpdateStatusDTO.class));
+
+        mockMvc.perform(put("/api/edit-status")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{ \"orderId\": \"" + orderUUID.toString() + "\", \"status\": \"INVALID_STATUS\", \"delivery\": \"Gobek\" }"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void testUpdateStatusDeliveryException() throws Exception {
+        UUID orderUUID = UUID.randomUUID();
+
+        OrderUpdateStatusDTO updateStatusDTO = new OrderUpdateStatusDTO();
+        updateStatusDTO.setOrderId(orderUUID);
+        updateStatusDTO.setStatus("SHIPPED");
+        updateStatusDTO.setDelivery("InvalidDelivery");
+
+        doThrow(new DeliveryException("Invalid delivery method")).when(orderService).updateStatus(any(OrderUpdateStatusDTO.class));
+
+        mockMvc.perform(put("/api/edit-status")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{ \"orderId\": \"" + orderUUID.toString() + "\", \"status\": \"SHIPPED\", \"delivery\": \"InvalidDelivery\" }"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void testUpdateStatusGenericException() throws Exception {
+        UUID orderUUID = UUID.randomUUID();
+
+        OrderUpdateStatusDTO updateStatusDTO = new OrderUpdateStatusDTO();
+        updateStatusDTO.setOrderId(orderUUID);
+        updateStatusDTO.setStatus("SHIPPED");
+        updateStatusDTO.setDelivery("Gobek");
+
+        doThrow(new RuntimeException("An unexpected error occurred")).when(orderService).updateStatus(any(OrderUpdateStatusDTO.class));
+
+        mockMvc.perform(put("/api/edit-status")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{ \"orderId\": \"" + orderUUID.toString() + "\", \"status\": \"SHIPPED\", \"delivery\": \"Gobek\" }"))
+                .andExpect(status().isInternalServerError());
     }
 }
