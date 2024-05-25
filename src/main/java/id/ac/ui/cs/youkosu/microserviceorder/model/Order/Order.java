@@ -13,20 +13,30 @@ import java.util.List;
 @Getter @Setter @Data
 public class Order {
     private String orderId;
-    private List<String> products;
+    private List<Product> products;
     private String status;
     private String trackingNumber;
+    private Double totalPrice;
 
-    public Order(String orderId, List<String> products){
+    public Order(String orderId, List<Product> products){
         this.orderId = orderId;
         this.products = products;
         this.status = new OrderStatusUnverified().toString();
+        this.totalPrice = calculateTotalPrice(products);
 
         if (products.isEmpty()) {
             throw new IllegalArgumentException();
         } else {
             this.products = products;
         }
+    }
+
+    private Double calculateTotalPrice(List<Product> products) {
+        double total = 0.0;
+        for (Product product : products) {
+            total += product.getProductReqPrice();
+        }
+        return total;
     }
 
     public void setStatusToVerified(){
@@ -41,12 +51,9 @@ public class Order {
     }
 
     public void setStatusToShipped(String deliveryMethod){
-        System.out.println("line 44 Order.java " +this.status);
         OrderStatus currentStatus = OrderStatusFactory.getOrderStatus(this.status);
-        System.out.println("line 46 Order.java " +this.status +" "+deliveryMethod);
         Delivery delivery = DeliveryFactory.getDelivery(deliveryMethod);
         currentStatus.setStatusToShipped(this, deliveryMethod);
-        this.trackingNumber = delivery.getDeliveryMethod().toString();
     }
 
     public void setStatusToCompleted(){
