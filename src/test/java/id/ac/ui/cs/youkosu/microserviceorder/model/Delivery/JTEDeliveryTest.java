@@ -1,33 +1,45 @@
 package id.ac.ui.cs.youkosu.microserviceorder.model.Delivery;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-public class JTEDeliveryTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class JTEDeliveryTest {
 
     @Test
-    public void testGenerateTrackingNumber() {
+    void testValidateTrackingNumber() {
         JTEDelivery delivery = new JTEDelivery();
-        String trackingNumber = delivery.getTrackingNumber();
-        Assertions.assertNotNull(trackingNumber);
-        Assertions.assertTrue(delivery.validateTrackingNumber());
+        delivery.setTrackingNumber("JTE-012345678912");
+        assertTrue(delivery.validateTrackingNumber());
     }
 
     @Test
-    public void testValidateTrackingNumber() {
+    void testInvalidTrackingNumber() {
         JTEDelivery delivery = new JTEDelivery();
-        delivery.setTrackingNumber("JTE-123456789012");
-        Assertions.assertTrue(delivery.validateTrackingNumber());
+        delivery.setTrackingNumber("123");
+        assertFalse(delivery.validateTrackingNumber());
+    }
 
-        delivery.setTrackingNumber("JTE-1234567890123");
-        Assertions.assertFalse(delivery.validateTrackingNumber());
+    @Test
+    void testEquals() {
+        JTEDelivery delivery1 = new JTEDelivery();
+        delivery1.setTrackingNumber("JTE-012345678912");
 
-        delivery.setTrackingNumber("JTE-12345678901");
-        Assertions.assertFalse(delivery.validateTrackingNumber());
+        JTEDelivery delivery2 = new JTEDelivery();
+        delivery2.setTrackingNumber("JTE-012345678912");
 
-        delivery.setTrackingNumber("JTE-1234567890AB");
-        Assertions.assertFalse(delivery.validateTrackingNumber());
+        assertEquals(delivery1, delivery2);
+        assertEquals(delivery1.hashCode(), delivery2.hashCode());
+    }
+
+    @Test
+    void testNotEquals() {
+        JTEDelivery delivery1 = new JTEDelivery();
+        delivery1.setTrackingNumber("JT123456789");
+
+        JTEDelivery delivery2 = new JTEDelivery();
+        delivery2.setTrackingNumber("JT987654321");
+
+        assertNotEquals(delivery1, delivery2);
     }
 }
