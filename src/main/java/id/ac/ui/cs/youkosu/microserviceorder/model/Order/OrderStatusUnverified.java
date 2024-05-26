@@ -1,8 +1,6 @@
 package id.ac.ui.cs.youkosu.microserviceorder.model.Order;
 
 import com.fasterxml.jackson.annotation.JsonValue;
-import id.ac.ui.cs.youkosu.microserviceorder.model.Delivery.Delivery;
-import id.ac.ui.cs.youkosu.microserviceorder.service.OrderStatusUpdateException;
 
 class OrderStatusUnverified extends OrderStatus {
     public OrderStatusUnverified() {
@@ -20,12 +18,12 @@ class OrderStatusUnverified extends OrderStatus {
 
     @Override
     public void setStatusToShipped(Order order, String delivery) {
-        throw new OrderStatusUpdateException("Cannot update order status to SHIPPED" + " for order " + order.getOrderId());
+        throwUpdateException(order, "SHIPPED");
     }
 
     @Override
     public void setStatusToCompleted(Order order) {
-        throw new OrderStatusUpdateException("Cannot update order status to COMPLETED" + " for order " + order.getOrderId());
+        throwUpdateException(order, "COMPLETED");
     }
     @JsonValue
     @Override
