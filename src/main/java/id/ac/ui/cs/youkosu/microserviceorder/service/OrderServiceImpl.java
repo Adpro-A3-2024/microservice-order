@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -42,7 +43,9 @@ public class OrderServiceImpl implements OrderService {
             } else if (status.equals("CANCELLED")) {
                 newOrder.setStatusToCancelled();
             } else if (status.equals("SHIPPED")) {
-                newOrder.setStatusToShipped(delivery);
+                do{
+                    newOrder.setStatusToShipped(delivery);
+                }while(this.isTrackingNumberUnique(newOrder.getTrackingNumber()) != true);
             } else if (status.equals("COMPLETED")) {
                 newOrder.setStatusToCompleted();
             }else{
@@ -65,4 +68,8 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findAll();
     }
 
+    public boolean isTrackingNumberUnique(String trackingNumber) {
+        Optional<Order> order = orderRepository.findByTrackingNumber(trackingNumber);
+        return order.isEmpty();
+    }
 }

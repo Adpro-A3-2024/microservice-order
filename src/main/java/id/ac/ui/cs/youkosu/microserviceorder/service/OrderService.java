@@ -13,4 +13,5 @@ public interface OrderService {
     public Order updateStatus(OrderUpdateStatusDTO orderUpdateStatusDTO);
     public Order findById(UUID orderId);
     public List<Order> findAll();
+    public boolean isTrackingNumberUnique(String trackingNumber);
 }
