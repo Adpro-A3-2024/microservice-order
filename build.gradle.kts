@@ -8,7 +8,7 @@ plugins {
 
 sonar {
 	properties {
-		property("sonar.projectKey", "Adpro-A3-2024_microservice-buyproduct")
+		property("sonar.projectKey", "Adpro-A3-2024_microservice-order")
 		property("sonar.organization", "adpro-a3-2024")
 		property("sonar.host.url", "https://sonarcloud.io")
 	}

@@ -1,15 +1,19 @@
 package id.ac.ui.cs.youkosu.microserviceorder.model.Order;
 
-import id.ac.ui.cs.youkosu.microserviceorder.model.Delivery.Delivery;
-import id.ac.ui.cs.youkosu.microserviceorder.model.Delivery.DeliveryMethod;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonValue;
+import id.ac.ui.cs.youkosu.microserviceorder.service.OrderStatusUpdateException;
 
-@Getter @Setter @Data
-public abstract class OrderStatus{
-    abstract public void setStatusToVerified(Order order);
-    abstract public void setStatusToCancelled(Order order);
-    abstract public void setStatusToShipped(Order order, String delivery);
-    abstract public void setStatusToCompleted(Order order);
+abstract class OrderStatus {
+
+    protected void throwUpdateException(Order order, String newStatus) {
+        throw new OrderStatusUpdateException("Cannot update order status to " + newStatus + " for order " + order.getOrderId());
+    }
+
+    public abstract void setStatusToVerified(Order order);
+    public abstract void setStatusToCancelled(Order order);
+    public abstract void setStatusToShipped(Order order, String delivery);
+    public abstract void setStatusToCompleted(Order order);
+
+    @JsonValue
+    public abstract String toString();
 }
