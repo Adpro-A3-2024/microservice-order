@@ -1,10 +1,13 @@
 plugins {
 	java
-	id("org.springframework.boot") version "3.2.4"
-	id("io.spring.dependency-management") version "1.1.4"
 	jacoco
 	id("org.sonarqube") version "4.4.1.3373"
+	id("org.springframework.boot") version "3.2.4"
+	id("io.spring.dependency-management") version "1.1.4"
 }
+
+group = "id.ac.ui.cs.youkosu"
+version = "0.0.1-SNAPSHOT"
 
 sonar {
 	properties {
@@ -14,8 +17,6 @@ sonar {
 	}
 }
 
-group = "id.ac.ui.cs.youkosu"
-version = "0.0.1-SNAPSHOT"
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_21
@@ -49,15 +50,42 @@ dependencies {
 }
 
 
-tasks.test {
+tasks.withType<Test> {
 	useJUnitPlatform()
-	finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
 }
+
+tasks.register<Test>("unitTest") {
+	description = "Runs unit tests."
+	group = "verification"
+
+	filter {
+		excludeTestsMatching("*FunctionalTest")
+	}
+}
+
+tasks.register<Test>("functionalTest") {
+	description = "Runs functional tests."
+	group = "verification"
+
+	filter {
+		includeTestsMatching("*FunctionalTest")
+	}
+}
+
+tasks.withType<Test>().configureEach {
+	useJUnitPlatform()
+}
+
+tasks.test {
+	filter {
+		excludeTestsMatching("*FunctionalTest")
+	}
+
+	finalizedBy(tasks.jacocoTestReport)
+}
+
 tasks.jacocoTestReport {
-	classDirectories.setFrom(files(classDirectories.files.map {
-		fileTree(it) { exclude("**/*Application**") }
-	}))
-	dependsOn(tasks.test) // tests are required to run before generating the report
+	dependsOn(tasks.test)
 	reports {
 		xml.required.set(true)
 		csv.required.set(true)
